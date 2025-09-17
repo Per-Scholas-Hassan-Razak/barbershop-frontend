@@ -8,3 +8,10 @@ export interface AuthContextProps {
   login: (token: string) => void;
   logout: () => void;
 }
+
+export interface CreateUser{
+  username:string, 
+  email:string,
+  password:string,
+  role?:"customer" | "barber"
+}
