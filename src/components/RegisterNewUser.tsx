@@ -12,11 +12,13 @@ import Select from "@mui/material/Select";
 import type { CreateUser } from "../types";
 import MenuItem from "@mui/material/MenuItem";
 import { registerNewUser } from "../services/userService";
+import { validateUser } from "../utils/validation";
 
 const RegisterNewUser = () => {
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
+  const [errors, setErrors] = useState<Record<string, string>>({});
   const [newUser, setNewUser] = useState<CreateUser>({
     username: "",
     email: "",
@@ -46,14 +48,28 @@ const RegisterNewUser = () => {
   ) => {
     e.preventDefault();
 
+    const validationErrors = validateUser(newUser);
+
+    if (Object.keys(validationErrors).length > 0) {
+      setErrors(validationErrors);
+      return;
+    }
+
     try {
-      console.log("new User Object", newUser)
       const response = await registerNewUser(newUser);
-      return response.data
+      console.log("Registered:", response);
+      // if (response.status === 201) {
+      //   alert("user creation successful!");
+      // }
     } catch (err) {
       console.error(err);
+    } finally {
+      setNewUser({ username: "", email: "", password: "", role: "customer" });
+      setErrors({});
+      handleClose();
     }
   };
+
   return (
     <>
       <Button variant="contained" onClick={handleOpen}>
@@ -76,9 +92,10 @@ const RegisterNewUser = () => {
                   id="email"
                   aria-describedby="new-user-email"
                   onChange={handleInputChange}
+                  error={!!errors.email}
                 />
-                <FormHelperText id="new-user-email">
-                  We'll never share your email.
+                <FormHelperText id="new-user-email" error={!!errors.email}>
+                  {errors.email || "We'll never share your email."}
                 </FormHelperText>
               </FormControl>
 
@@ -88,9 +105,13 @@ const RegisterNewUser = () => {
                   id="username"
                   aria-describedby="new-user-username"
                   onChange={handleInputChange}
+                  error={!!errors.username}
                 />
-                <FormHelperText id="new-user-username">
-                  Choose a unique username.
+                <FormHelperText
+                  id="new-user-username"
+                  error={!!errors.username}
+                >
+                  {errors.username || "Choose a unique username."}
                 </FormHelperText>
               </FormControl>
 
@@ -101,9 +122,13 @@ const RegisterNewUser = () => {
                   type="password"
                   aria-describedby="new-user-password"
                   onChange={handleInputChange}
+                  error={!!errors.password}
                 />
-                <FormHelperText id="new-user-password">
-                  Choose a strong password.
+                <FormHelperText
+                  id="new-user-password"
+                  error={!!errors.password}
+                >
+                  {errors.password || "password must be > 6 characters."}
                 </FormHelperText>
               </FormControl>
 

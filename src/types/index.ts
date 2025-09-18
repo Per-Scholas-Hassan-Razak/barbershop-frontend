@@ -13,5 +13,5 @@ export interface CreateUser{
   username:string, 
   email:string,
   password:string,
-  role?:"customer" | "barber"
+  role:"customer" | "barber"
 }
