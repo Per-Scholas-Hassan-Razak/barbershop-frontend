@@ -58,8 +58,6 @@ const LoginExistingUser = () => {
 
     try {
       const response = await loginExistingUser(existingUser);
-      console.log("token:", response.token);
-      console.log("payload:", response.payload);
       /**
        * 1. if successful -> extract token and invoke login in from auth context
        * 2. use auth context login method to set token in local storage
