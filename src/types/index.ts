@@ -9,9 +9,13 @@ export interface AuthContextProps {
   logout: () => void;
 }
 
-export interface CreateUser{
-  username:string, 
-  email:string,
-  password:string,
-  role:"customer" | "barber"
+export interface CreateUser {
+  username: string;
+  email: string;
+  password: string;
+  role: "customer" | "barber";
+}
+export interface LoginUser {
+  email: string;
+  password: string;
 }

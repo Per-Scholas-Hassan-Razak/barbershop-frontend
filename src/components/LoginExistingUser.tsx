@@ -8,22 +8,23 @@ import InputLabel from "@mui/material/InputLabel";
 import Input from "@mui/material/Input";
 import FormHelperText from "@mui/material/FormHelperText";
 import Stack from "@mui/material/Stack";
-import Select from "@mui/material/Select";
-import type { CreateUser } from "../types";
-import MenuItem from "@mui/material/MenuItem";
-import { registerNewUser } from "../services/userService";
-import { validateUser } from "../utils/validation";
+import type { LoginUser } from "../types";
 
-const RegisterNewUser = () => {
+import { loginExistingUser } from "../services/userService";
+import { validateLoginCredentials } from "../utils/validation";
+import { useAuth } from "../contexts/authContext";
+import { Typography } from "@mui/material";
+
+const LoginExistingUser = () => {
+  const { login } = useAuth();
+
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
   const [errors, setErrors] = useState<Record<string, string>>({});
-  const [newUser, setNewUser] = useState<CreateUser>({
-    username: "",
+  const [existingUser, setExistingUser] = useState<LoginUser>({
     email: "",
     password: "",
-    role: "customer",
   });
 
   const style = {
@@ -40,15 +41,15 @@ const RegisterNewUser = () => {
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { id, value } = e.target;
-    setNewUser((prev) => ({ ...prev, [id]: value }));
+    setExistingUser((prev) => ({ ...prev, [id]: value }));
   };
 
-  const handleNewUserRegistration = async (
+  const handleExistingUserLogin = async (
     e: React.FormEvent<HTMLFormElement>
   ) => {
     e.preventDefault();
 
-    const validationErrors = validateUser(newUser);
+    const validationErrors = validateLoginCredentials(existingUser);
 
     if (Object.keys(validationErrors).length > 0) {
       setErrors(validationErrors);
@@ -56,16 +57,23 @@ const RegisterNewUser = () => {
     }
 
     try {
-      const response = await registerNewUser(newUser);
-      console.log("Registered:", response);
-      // if (response.status === 201) {
-      //   alert("user creation successful!");
-      // }
-      handleClose();
+      const response = await loginExistingUser(existingUser);
+      console.log("token:", response.token);
+      console.log("payload:", response.payload);
+      /**
+       * 1. if successful -> extract token and invoke login in from auth context
+       * 2. use auth context login method to set token in local storage
+       * 3. reuse token on subsequent requests as auth header
+       */
+
+      if (response.token) {
+        login(response.token);
+        handleClose();
+      }
     } catch (err) {
       console.error(err);
     } finally {
-      setNewUser({ username: "", email: "", password: "", role: "customer" });
+      setExistingUser({ email: "", password: "" });
       setErrors({});
     }
   };
@@ -73,7 +81,7 @@ const RegisterNewUser = () => {
   return (
     <>
       <Button variant="contained" onClick={handleOpen}>
-        Register New User
+        Login Exisiting User
       </Button>
 
       <Modal open={open} onClose={handleClose}>
@@ -82,7 +90,7 @@ const RegisterNewUser = () => {
             component="form"
             elevation={3}
             sx={{ p: 3 }}
-            onSubmit={handleNewUserRegistration}
+            onSubmit={handleExistingUserLogin}
             noValidate
           >
             <Stack spacing={3}>
@@ -100,22 +108,6 @@ const RegisterNewUser = () => {
               </FormControl>
 
               <FormControl>
-                <InputLabel htmlFor="username">Username</InputLabel>
-                <Input
-                  id="username"
-                  aria-describedby="new-user-username"
-                  onChange={handleInputChange}
-                  error={!!errors.username}
-                />
-                <FormHelperText
-                  id="new-user-username"
-                  error={!!errors.username}
-                >
-                  {errors.username || "Choose a unique username."}
-                </FormHelperText>
-              </FormControl>
-
-              <FormControl>
                 <InputLabel htmlFor="password">Password</InputLabel>
                 <Input
                   id="password"
@@ -128,37 +120,23 @@ const RegisterNewUser = () => {
                   id="new-user-password"
                   error={!!errors.password}
                 >
-                  {errors.password || "password must be > 6 characters."}
+                  {errors.password || "password must be greater than 6 characters."}
                 </FormHelperText>
               </FormControl>
 
-              <FormControl fullWidth>
-                <InputLabel id="role-label">Role</InputLabel>
-                <Select
-                  labelId="role-label"
-                  id="role"
-                  value={newUser.role}
-                  onChange={(e) =>
-                    setNewUser((prevUser) => ({
-                      ...prevUser,
-                      role: e.target.value as "customer" | "barber",
-                    }))
-                  }
-                >
-                  <MenuItem value="customer">Customer</MenuItem>
-                  <MenuItem value="barber">Barber</MenuItem>
-                </Select>
-                <FormHelperText>
-                  Choose whether you are a customer or barber
-                </FormHelperText>
-              </FormControl>
-
-              <Box display="flex" justifyContent="space-between">
-                <Button type="submit" variant="contained">
+              <Stack spacing={1} mt={2} alignItems="center">
+                <Button type="submit" variant="contained" fullWidth>
+                  Log In
+                </Button>
+                <Button variant="outlined" fullWidth>
                   Sign Up
                 </Button>
-                <Button variant="outlined">Log In</Button>
-              </Box>
+
+                <Typography variant="body2" color="text.secondary">
+                  Not a member? Sign up today!
+                </Typography>
+
+              </Stack>
             </Stack>
           </Paper>
         </Box>
@@ -167,4 +145,4 @@ const RegisterNewUser = () => {
   );
 };
 
-export default RegisterNewUser;
+export default LoginExistingUser;
