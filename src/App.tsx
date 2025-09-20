@@ -3,6 +3,7 @@ import "./App.css";
 import NavBar from "./components/NavBar";
 import BarberDashboard from "./pages/BarberDashboard";
 import { useAuth } from "./contexts/authContext";
+import HaircutTemplates from "./components/HaircutTemplates";
 
 function App() {
   const { user } = useAuth();
@@ -17,7 +18,7 @@ function App() {
         {user?.role === "barber" && (
           <Route
             path="/barber/dashboard/haircuts/templates"
-            element={<h1>templates</h1>}
+            element={<HaircutTemplates />}
           />
         )}
         {user?.role === "barber" && (
