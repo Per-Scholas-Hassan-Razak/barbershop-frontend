@@ -14,10 +14,12 @@ import MenuItem from "@mui/material/MenuItem";
 import { registerNewUser } from "../services/userService";
 import { validateUser } from "../utils/validation";
 
-const RegisterNewUser = () => {
-  const [open, setOpen] = useState(false);
-  const handleOpen = () => setOpen(true);
-  const handleClose = () => setOpen(false);
+const RegisterNewUser = ({ open, onClose }: { open: boolean; onClose: () => void }) => {
+
+   const handleClose = () => {
+    onClose();
+  };
+
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [newUser, setNewUser] = useState<CreateUser>({
     username: "",
@@ -72,9 +74,9 @@ const RegisterNewUser = () => {
 
   return (
     <>
-      <Button variant="contained" onClick={handleOpen}>
+      {/* <Button variant="contained" onClick={handleOpen}>
         Register New User
-      </Button>
+      </Button> */}
 
       <Modal open={open} onClose={handleClose}>
         <Box sx={style}>

@@ -15,12 +15,13 @@ import { validateLoginCredentials } from "../utils/validation";
 import { useAuth } from "../contexts/authContext";
 import { Typography } from "@mui/material";
 
-const LoginExistingUser = () => {
+const LoginExistingUser = ({ open, onClose }: { open: boolean; onClose: () => void }) => {
   const { login } = useAuth();
 
-  const [open, setOpen] = useState(false);
-  const handleOpen = () => setOpen(true);
-  const handleClose = () => setOpen(false);
+  const handleClose = () => {
+    onClose();
+  };
+
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [existingUser, setExistingUser] = useState<LoginUser>({
     email: "",
@@ -78,9 +79,9 @@ const LoginExistingUser = () => {
 
   return (
     <>
-      <Button variant="contained" onClick={handleOpen}>
+      {/* <Button variant="contained" onClick={handleOpen}>
         Login Exisiting User
-      </Button>
+      </Button> */}
 
       <Modal open={open} onClose={handleClose}>
         <Box sx={style}>

@@ -1,12 +1,15 @@
+import { Route, Routes } from "react-router-dom";
 import "./App.css";
-import LoginExistingUser from "./components/LoginExistingUser";
-// import RegisterNewUser from "./components/RegisterNewUser";
+import NavBar from "./components/NavBar";
 
 function App() {
   return (
     <>
-      {/* <RegisterNewUser /> */}
-      <LoginExistingUser />
+      <NavBar />
+      <Routes>
+        <Route path="/" element={<h1>landing!</h1>} />
+        <Route path="*" element={<h1>404 Not found!</h1>} />
+      </Routes>
     </>
   );
 }
