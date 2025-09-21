@@ -28,7 +28,7 @@ const AuthProvider = ({ children }: { children: ReactNode }) => {
      if (decoded.role === "barber") {
     navigate("/barber/dashboard");
   } else {
-    navigate("/"); 
+    navigate("/customer/dashboard"); 
   }
   };
 

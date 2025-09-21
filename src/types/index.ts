@@ -42,7 +42,7 @@ export interface CustomizeHaircutProps {
   open: boolean;
   onClose: () => void;
   template?: HaircutTemplateDocument | null;
-  cut?: BarberHaircut | null; 
+  cut?: BarberHaircut | null;
   mode: "create" | "edit";
 }
 
@@ -63,4 +63,46 @@ export interface BarberHaircut {
   styleNotes?: string;
   createdAt: string;
   updatedAt: string;
+}
+
+export interface QueueSummary {
+  _id: string;          // queue ID
+  isOpen: boolean;
+  startedAt: string;
+  createdAt: string;
+  updatedAt: string;
+  barber: {
+    id: string;         // note: backend sends "id" not "_id"
+    username: string;
+  };
+}
+
+export interface QueueEntry {
+  _id: string;
+  position: number;
+  status: "waiting" | "in_progress" | "completed" | "cancelled";
+  customer: {
+    _id: string;
+    username: string;
+    email: string;
+  };
+  haircut: {
+    _id: string;
+    customePrice?: number;
+    customeDuration?: number;
+    styleNotes?: string;
+  };
+}
+
+export interface BarberQueueResponse {
+  queue: {
+    _id: string;
+    isOpen: boolean;
+    startedAt: string;
+    barber: {
+      id: string;
+      username: string;
+    };
+  };
+  entries: QueueEntry[];
 }
