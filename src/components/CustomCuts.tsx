@@ -15,8 +15,6 @@ const CustomCuts = () => {
   const [cuts, setCuts] = useState<BarberHaircut[]>([]);
 
   const [editOpen, setEditOpen] = useState(false);
-  const [createOpen, setCreateOpen] = useState(false);
-  const [mode, setMode] = useState<"create" | "edit" | "">("");
   const [selectedCut, setSelectedCut] = useState<BarberHaircut | null>(null);
 
   useEffect(() => {

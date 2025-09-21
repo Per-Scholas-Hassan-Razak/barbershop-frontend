@@ -3,7 +3,7 @@ import { Box, AppBar, Toolbar, Typography, Button } from "@mui/material";
 import RegisterNewUser from "./RegisterNewUser";
 import LoginExistingUser from "./LoginExistingUser";
 import { useAuth } from "../contexts/authContext";
-// import barbericon "../""
+
 
 const NavBar = () => {
   const [registerOpen, setRegisterOpen] = useState(false);
@@ -13,20 +13,21 @@ const NavBar = () => {
 
   return (
     <Box sx={{ flexGrow: 1 }}>
-      <AppBar position="static" sx={{ bgcolor: "white" }}>
+      <AppBar position="static" sx={{ bgcolor: "darkgray" }}>
         <Toolbar>
+        
           {"BARBERSHOP".split("").map((char, index) => (
             <Typography
               key={index}
               variant="h6"
               component="span"
-              sx={{ mx: 1.3, fontWeight: "bold", color: "black" }}
+              sx={{ mx: 1.4, fontWeight: "bold", color: "black" }}
             >
               {char}
             </Typography>
           ))}
 
-          <Box sx={{ display: "flex", flexGrow: 1, marginLeft: "230px" }}>
+  <Box sx={{ display: "flex", flexGrow: 1, marginLeft:'230px'}}>
             <img
               src="public/icons/barbericon.svg"
               alt="Barbershop Icon"

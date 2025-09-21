@@ -25,3 +25,13 @@ export const deleteHaircut = async (haircutId: string) => {
   const res = await api.delete(`/barbers/haircuts/${haircutId}`);
   return res.data;
 };
+
+export const openQueue = async () => {
+  const res = await api.post("/barbers/queue/open");
+  return res.data;
+};
+
+export const closeQueue = async () => {
+  const res = await api.patch("/barbers/queue/close");
+  return res.data;
+};
