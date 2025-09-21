@@ -1,12 +1,14 @@
-import { useEffect, useState, type ReactNode} from "react"
-import type { User } from "../types"
-import { AuthContext } from "../contexts/authContext"
-import { jwtDecode } from 'jwt-decode'
+import { useEffect, useState, type ReactNode } from "react";
+import type { User } from "../types";
+import { AuthContext } from "../contexts/authContext";
+import { jwtDecode } from "jwt-decode";
+import { useNavigate } from "react-router-dom";
 
 const AuthProvider = ({ children }: { children: ReactNode }) => {
- const [user, setUser] = useState<User | null>(null);
+  const [user, setUser] = useState<User | null>(null);
+  const navigate = useNavigate();
 
- // Load user from localStorage on first render
+  // Load user from localStorage on first render
   useEffect(() => {
     const token = localStorage.getItem("token");
     if (token) {
@@ -28,16 +30,14 @@ const AuthProvider = ({ children }: { children: ReactNode }) => {
   const logout = () => {
     localStorage.removeItem("token");
     setUser(null);
+    navigate("/");
   };
 
-    return(
-        <AuthContext.Provider value={{user,login,logout}}>
-            {children}
-        </AuthContext.Provider>
-    )
+  return (
+    <AuthContext.Provider value={{ user, login, logout }}>
+      {children}
+    </AuthContext.Provider>
+  );
+};
 
-}
-
-
-
-export default AuthProvider
+export default AuthProvider;

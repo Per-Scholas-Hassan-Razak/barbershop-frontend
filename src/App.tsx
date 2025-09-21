@@ -12,6 +12,7 @@ function App() {
     <>
       <NavBar />
       <Routes>
+        
         <Route path="/" element={<h1>landing!</h1>} />
         {user?.role === "barber" && (
           <Route path="/barber/dashboard" element={<BarberDashboard />} />
