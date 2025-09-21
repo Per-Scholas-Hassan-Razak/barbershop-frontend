@@ -29,7 +29,7 @@ const BarberDashboard = () => {
             <Typography variant="body2" color="text.secondary">
               View, edit, or delete your custom cuts.
             </Typography>
-            <Button onClick={() => navigate("/barber/dashboard/haircuts/custom")} sx={{ mt: 2 }} variant="contained">
+            <Button onClick={() => navigate("/barber/dashboard/haircuts/custom-cuts")} sx={{ mt: 2 }} variant="contained">
               Manage Cuts
             </Button>
           </CardContent>

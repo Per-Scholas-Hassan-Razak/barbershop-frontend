@@ -4,6 +4,7 @@ import NavBar from "./components/NavBar";
 import BarberDashboard from "./pages/BarberDashboard";
 import { useAuth } from "./contexts/authContext";
 import HaircutTemplates from "./components/HaircutTemplates";
+import CustomCuts from "./components/CustomCuts";
 
 function App() {
   const { user } = useAuth();
@@ -21,11 +22,9 @@ function App() {
             element={<HaircutTemplates />}
           />
         )}
+
         {user?.role === "barber" && (
-          <Route
-            path="/barber/dashboard/haircuts/custom"
-            element={<h1>custom barber cuts</h1>}
-          />
+          <Route path="/barber/dashboard/haircuts/custom-cuts" element={<CustomCuts />} />
         )}
         <Route path="*" element={<h1>404 Not found!</h1>} />
       </Routes>

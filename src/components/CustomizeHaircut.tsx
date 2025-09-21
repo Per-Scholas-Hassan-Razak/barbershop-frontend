@@ -10,11 +10,11 @@ import FormHelperText from "@mui/material/FormHelperText";
 import Stack from "@mui/material/Stack";
 import type { CreateHaircut, CustomizeHaircutProps } from "../types";
 import { validateHaircut } from "../utils/validation";
-import { createHaircut } from "../services/barberService";
+import { createHaircut, updateHaircut } from "../services/barberService";
 
 
 
-const CustomizeHaircut = ({open,onClose, template}:CustomizeHaircutProps) => {
+const CustomizeHaircut = ({open,onClose, template, mode,cut}:CustomizeHaircutProps) => {
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [newHaircut, setNewHaircut] = useState<CreateHaircut>({
     haircutTemplate:"",
@@ -23,18 +23,25 @@ const CustomizeHaircut = ({open,onClose, template}:CustomizeHaircutProps) => {
     duration: 0,
     styleNotes: "",
   });
-
-  useEffect(() => {
-  if (template) {
+useEffect(() => {
+  if (mode === "create" && template) {
     setNewHaircut({
-      haircutTemplate:template._id,
+      haircutTemplate: template._id,
       name: template.name,
-      price: template.baseCost,        
-      duration: template.baseDuration, 
-      styleNotes: template.description || "", 
+      price: template.baseCost,
+      duration: template.baseDuration,
+      styleNotes: template.description || "",
+    });
+  } else if (mode === "edit" && cut) {
+    setNewHaircut({
+      haircutTemplate: cut.haircutTemplate._id, // still keep reference
+      name: cut.haircutTemplate.name,
+      price: cut.customPrice ?? cut.haircutTemplate.baseCost,
+      duration: cut.customDuration ?? cut.haircutTemplate.baseDuration,
+      styleNotes: cut.styleNotes || "",
     });
   }
-}, [template]);
+}, [mode, template, cut]);
 
   const style = {
     position: "absolute" as const,
@@ -69,8 +76,11 @@ const CustomizeHaircut = ({open,onClose, template}:CustomizeHaircutProps) => {
 
     try {
       console.log("new Haircut :", newHaircut)
-      const response = await createHaircut(newHaircut);
-      console.log("Haircut created:", response);
+        if (mode === "create") {
+      await createHaircut(newHaircut);
+    } else if (mode === "edit" && cut) {
+      await updateHaircut(cut._id, newHaircut);
+    }
       onClose();
     } catch (err) {
       console.error(err);
@@ -154,7 +164,7 @@ const CustomizeHaircut = ({open,onClose, template}:CustomizeHaircutProps) => {
 
             <Box display="flex" justifyContent="flex-end">
               <Button type="submit" variant="contained">
-                Save
+                {mode === "create" ? "Create" : "Update"}
               </Button>
             </Box>
           </Stack>

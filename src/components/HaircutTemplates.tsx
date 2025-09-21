@@ -60,6 +60,7 @@ const HaircutTemplates = () => {
         open={open}
         onClose={handleClose}
         template={selectedTemplate}
+        mode="create"
       />
     </>
   );

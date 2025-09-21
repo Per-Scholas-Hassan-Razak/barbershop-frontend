@@ -1,4 +1,4 @@
-import type { CreateHaircut } from "../types";
+import type { BarberHaircut, CreateHaircut } from "../types";
 import api from "./api";
 
 export const fetchTemplates = async () => {
@@ -8,5 +8,20 @@ export const fetchTemplates = async () => {
 
 export const createHaircut = async (data:CreateHaircut) => {
   const res = await api.post("barbers/haircuts",data); 
+  return res.data;
+};
+
+export const fetchCustomCuts = async (): Promise<BarberHaircut[]> => {
+  const res = await api.get("/barbers/haircuts");
+  return res.data;
+};
+
+export const updateHaircut = async (haircutId: string, data: Partial<CreateHaircut>) => {
+  const res = await api.put(`/barbers/haircuts/${haircutId}`, data);
+  return res.data;
+};
+
+export const deleteHaircut = async (haircutId: string) => {
+  const res = await api.delete(`/barbers/haircuts/${haircutId}`);
   return res.data;
 };
