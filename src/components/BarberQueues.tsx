@@ -12,6 +12,8 @@ const BarberQueues = () => {
   const [error, setError] = useState<string | null>(null);
   const navigate = useNavigate();
 
+  
+
   useEffect(() => {
     const loadQueues = async () => {
       try {

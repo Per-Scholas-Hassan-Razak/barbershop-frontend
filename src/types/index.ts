@@ -106,3 +106,17 @@ export interface BarberQueueResponse {
   };
   entries: QueueEntry[];
 }
+
+export interface PublicBarberHaircut {
+  _id: string;
+  barber: string;
+  haircutTemplate: {
+    _id: string;
+    name: string;
+    baseCost: number;
+    baseDuration: number;
+  };
+  styleNotes?: string;
+  createdAt: string;
+  updatedAt: string;
+}
