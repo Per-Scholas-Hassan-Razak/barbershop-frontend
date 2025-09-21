@@ -25,6 +25,11 @@ const AuthProvider = ({ children }: { children: ReactNode }) => {
     localStorage.setItem("token", token);
     const decoded: User = jwtDecode(token);
     setUser(decoded);
+     if (decoded.role === "barber") {
+    navigate("/barber/dashboard");
+  } else {
+    navigate("/"); 
+  }
   };
 
   const logout = () => {

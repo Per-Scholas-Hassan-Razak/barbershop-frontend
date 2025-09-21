@@ -4,17 +4,19 @@ import {
   Card,
   CardContent,
   Typography,
-  Grid,
+  // Grid,
   CardActions,
   Button,
 } from "@mui/material";
 import type { BarberHaircut } from "../types";
 import CustomizeHaircut from "./CustomizeHaircut";
+import Grid from "@mui/material/Grid";
 
 const CustomCuts = () => {
   const [cuts, setCuts] = useState<BarberHaircut[]>([]);
 
   const [editOpen, setEditOpen] = useState(false);
+
   const [selectedCut, setSelectedCut] = useState<BarberHaircut | null>(null);
 
   useEffect(() => {

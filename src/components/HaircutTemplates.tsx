@@ -1,9 +1,13 @@
 import { useEffect, useState } from "react";
 import { fetchTemplates } from "../services/barberService";
-import { Card, CardContent, Typography, Grid, Button } from "@mui/material";
+import { Card, 
+  CardContent, 
+  Typography, 
+  // Grid,
+   Button } from "@mui/material";
 import type { HaircutTemplateDocument } from "../types";
 import CustomizeHaircut from "./CustomizeHaircut";
-
+import Grid from "@mui/material/Grid";
 
 const HaircutTemplates = () => {
   const [templates, setTemplates] = useState<HaircutTemplateDocument[]>([]);
