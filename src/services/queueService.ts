@@ -23,3 +23,8 @@ export const fetchBarberHaircuts = async (
   const res = await api.get(`/queues/${barberId}/haircuts`);
   return res.data;
 };
+
+export const fetchQueueState = async () => {
+  const res = await api.get("/barbers/queue/state");
+  return res.data; 
+};

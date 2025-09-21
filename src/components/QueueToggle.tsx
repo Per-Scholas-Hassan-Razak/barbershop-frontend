@@ -1,10 +1,23 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Switch, FormControlLabel, Typography, Box } from "@mui/material";
 import { openQueue, closeQueue } from "../services/barberService";
+import { fetchQueueState } from "../services/queueService";
 
 const QueueToggle = () => {
-  const [isOpen, setIsOpen] = useState(false);
+  const [isOpen, setIsOpen] = useState<boolean | null>(null);
   const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    const loadQueueState = async () => {
+      try {
+        const state = await fetchQueueState();
+        setIsOpen(state.isOpen);
+      } catch (err) {
+        console.error("Failed to load queue state:", err);
+      }
+    };
+    loadQueueState();
+  }, []);
 
   const handleToggle = async (e: React.ChangeEvent<HTMLInputElement>) => {
     setLoading(true);
@@ -35,14 +48,18 @@ const QueueToggle = () => {
           color: isOpen ? "success.main" : "error.main",
         }}
       >
-        {isOpen ? "OPEN FOR BUSINESS" : "CLOSED FOR THE NIGHT"}
+        {isOpen === null
+          ? "Loading queue state…"
+          : isOpen
+          ? "OPEN FOR BUSINESS"
+          : "CLOSED FOR THE NIGHT"}
       </Typography>
 
       {/* Switch control */}
       <FormControlLabel
         control={
           <Switch
-            checked={isOpen}
+            checked={isOpen ?? false}
             onChange={handleToggle}
             disabled={loading}
             color="success"

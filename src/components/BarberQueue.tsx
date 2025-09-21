@@ -10,6 +10,8 @@ import {
   Select,
   FormControl,
   InputLabel,
+  CardActionArea,
+  Button,
 } from "@mui/material";
 import {
   fetchBarberHaircuts,
@@ -22,7 +24,10 @@ import type { BarberQueueResponse, PublicBarberHaircut } from "../types";
 const BarberQueue = () => {
   const { barberId } = useParams<{ barberId: string }>();
   const [queueData, setQueueData] = useState<BarberQueueResponse | null>(null);
-  const [selectedHaircut, setSelectedHaircut] = useState("");
+  const [selectedHaircutId, setSelectedHaircutId] = useState("");
+  const [selectedCut, setSelectedCut] = useState<PublicBarberHaircut | null>(
+    null
+  );
   const [haircuts, setHaircuts] = useState<PublicBarberHaircut[]>([]);
   //   const [myPosition, setMyPosition] = useState<number | null>(null);
 
@@ -65,27 +70,54 @@ const BarberQueue = () => {
             <FormControl fullWidth sx={{ mt: 2 }}>
               <InputLabel>Select Haircut</InputLabel>
               <Select
-                value={selectedHaircut}
+                value={selectedHaircutId}
                 label="Select Haircut"
-                onChange={(e) => setSelectedHaircut(e.target.value)}
+                onChange={(e) => {
+                  const id = e.target.value;
+                  setSelectedHaircutId(id);
+                  const cut = haircuts.find((h) => h._id === id) || null;
+                  setSelectedCut(cut);
+                }}
               >
                 {haircuts.map((cut) => (
                   <MenuItem key={cut._id} value={cut._id}>
-                    {cut.haircutTemplate.name} — ${cut.haircutTemplate.baseCost}{" "}
-                    ({cut.haircutTemplate.baseDuration} mins)
+                    {cut.haircutTemplate.name}
                   </MenuItem>
                 ))}
               </Select>
             </FormControl>
-            {/* 
-          <Button
-            variant="contained"
-            sx={{ mt: 2 }}
-            onClick={handleJoinQueue}
-            disabled={!selectedHaircut}
-          >
-            Join Queue
-          </Button>
+            {selectedCut && (
+              <Card variant="outlined" sx={{ mt: 2 }}>
+                <CardContent>
+                  <Typography variant="h6">
+                    {selectedCut.haircutTemplate.name}
+                  </Typography>
+                  <Typography variant="body2" color="text.secondary">
+                    Cost: ${selectedCut.haircutTemplate.baseCost}
+                  </Typography>
+                  <Typography variant="body2" color="text.secondary">
+                    Duration: {selectedCut.haircutTemplate.baseDuration} mins
+                  </Typography>
+                  {selectedCut.styleNotes && (
+                    <Typography variant="body2" sx={{ mt: 1 }}>
+                      Notes: {selectedCut.styleNotes}
+                    </Typography>
+                  )}
+                </CardContent>
+            
+              </Card>
+            )}
+             <CardActionArea>
+                  <Button
+                    variant="contained"
+                    sx={{ m:2 }}
+                    // onClick={handleJoinQueue}
+                    // disabled={!selectedHaircut}
+                  >
+                    Join Queue
+                  </Button>
+                </CardActionArea>{/* 
+          
 
           {myPosition !== null && (
             <Typography sx={{ mt: 2 }}>
