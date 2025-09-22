@@ -10,18 +10,20 @@ import {
   Select,
   FormControl,
   InputLabel,
-  CardActionArea,
   Button,
 } from "@mui/material";
 import {
   fetchBarberHaircuts,
   fetchBarberQueue,
-  //   joinQueue,
+  joinQueue,
   //   fetchMyPosition,
 } from "../services/queueService";
 import type { BarberQueueResponse, PublicBarberHaircut } from "../types";
+import { useAuth } from "../contexts/authContext";
 
 const BarberQueue = () => {
+  const { user } = useAuth();
+
   const { barberId } = useParams<{ barberId: string }>();
   const [queueData, setQueueData] = useState<BarberQueueResponse | null>(null);
   const [selectedHaircutId, setSelectedHaircutId] = useState("");
@@ -38,16 +40,21 @@ const BarberQueue = () => {
     }
   }, [barberId]);
 
-  //   const handleJoinQueue = async () => {
-  //     if (!barberId || !selectedHaircut) return;
-  //     try {
-  //       await joinQueue(barberId, selectedHaircut);
-  //       const pos = await fetchMyPosition(barberId);
-  //       setMyPosition(pos.position);
-  //     } catch (err) {
-  //       console.error("Failed to join queue:", err);
-  //     }
-  //   };
+  const handleJoinQueue = async () => {
+    if (!barberId || !selectedHaircutId) return;
+    try {
+      const updatedQueue = await joinQueue(barberId, selectedHaircutId);
+      setQueueData(updatedQueue);
+      setSelectedHaircutId("");
+      setSelectedCut(null);
+    } catch (err) {
+      console.error("Failed to join queue:", err);
+    }
+  };
+
+  const myEntry = queueData?.entries.find(
+    (entry) => entry.customer._id === user?.sub
+  );
 
   if (!queueData) return <Typography>Loading queue...</Typography>;
 
@@ -81,7 +88,7 @@ const BarberQueue = () => {
               >
                 {haircuts.map((cut) => (
                   <MenuItem key={cut._id} value={cut._id}>
-                    {cut.haircutTemplate.name}
+                    {cut.styleNotes}
                   </MenuItem>
                 ))}
               </Select>
@@ -104,22 +111,18 @@ const BarberQueue = () => {
                     </Typography>
                   )}
                 </CardContent>
-            
               </Card>
             )}
-             <CardActionArea>
-                  <Button
-                    variant="contained"
-                    sx={{ m:2 }}
-                    // onClick={handleJoinQueue}
-                    // disabled={!selectedHaircut}
-                  >
-                    Join Queue
-                  </Button>
-                </CardActionArea>{/* 
-          
+            <Button
+              variant="contained"
+              sx={{ m: 2 }}
+              onClick={handleJoinQueue}
+              disabled={!selectedHaircutId}
+            >
+              Join Queue
+            </Button>
 
-          {myPosition !== null && (
+            {/* {myPosition !== null && (
             <Typography sx={{ mt: 2 }}>
               You are currently #{myPosition} in the queue.
             </Typography>
@@ -147,14 +150,19 @@ const BarberQueue = () => {
                         </Typography>
                         <Typography variant="body2">
                           Cut: {entry.haircut.styleNotes || "N/A"} (
-                          {entry.haircut.customeDuration ?? "?"} mins, $
-                          {entry.haircut.customePrice ?? "?"})
+                          {entry.haircut.haircutTemplate?.baseDuration ?? "?"} mins, $
+                          {entry.haircut.haircutTemplate?.baseCost ?? "?"})
                         </Typography>
                       </CardContent>
                     </Card>
                   </Grid>
                 ))}
               </Grid>
+            )}
+            {myEntry && (
+              <Typography sx={{ mt: 2 }}>
+                You are currently #{myEntry.position} in the queue.
+              </Typography>
             )}
           </CardContent>
         </Card>

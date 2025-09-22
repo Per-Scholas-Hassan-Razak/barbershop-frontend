@@ -28,3 +28,11 @@ export const fetchQueueState = async () => {
   const res = await api.get("/barbers/queue/state");
   return res.data; 
 };
+
+export const joinQueue = async (
+  barberId: string,
+  barberHaircut: string
+): Promise<BarberQueueResponse> => {
+  const res = await api.post(`/queues/${barberId}/join`, { barberHaircut });
+  return res.data;
+};

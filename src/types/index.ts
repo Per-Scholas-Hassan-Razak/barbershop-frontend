@@ -88,9 +88,15 @@ export interface QueueEntry {
   };
   haircut: {
     _id: string;
-    customePrice?: number;
-    customeDuration?: number;
+    customPrice?: number;
+    customDuration?: number;
     styleNotes?: string;
+     haircutTemplate?: {
+      _id: string;
+      name: string;
+      baseCost: number;
+      baseDuration: number;
+    };
   };
 }
 
