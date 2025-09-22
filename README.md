@@ -5,9 +5,13 @@ This project provides separate dashboards for **barbers** and **customers**, all
 
 ## 🚀 Features
 
-### LIVE LINK 
-    FRONTEND LIVE LINK: [https://barbershop-frontend-wq4c.onrender.com/]
-    BACKEND LIVE LINK : [https://barbershop-backend-hkms.onrender.com/api/v1]
+## 🚀 Live Deployment
+
+Backend API is hosted on Render:  
+👉 [Barbershop Backend API](https://barbershop-backend-hkms.onrender.com/api/v1)
+
+Frontend repo:  
+👉 [Barbershop Frontend](https://barbershop-frontend-wq4c.onrender.com/)
 
 ### 🔑 Authentication
 - Register new users (barber or customer).
