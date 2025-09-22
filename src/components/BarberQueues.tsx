@@ -63,6 +63,10 @@ const BarberQueues = () => {
                   <Typography variant="h6">
                     {q.barber.username.toUpperCase()}
                   </Typography>
+                        <Typography variant="subtitle2"
+  sx={{ fontWeight: "bold", color: "primary.secondary", mt: 1 }}>
+                    Queue started: {new Date(q.startedAt).toLocaleString()}
+                  </Typography>
                   <img
                     src={DEFAULT_BARBER_IMG}
                     alt={`Barber ${q.barber.username}`}
@@ -73,9 +77,7 @@ const BarberQueues = () => {
                       marginBottom: 12,
                     }}
                   />
-                  <Typography variant="body2" color="text.secondary">
-                    Queue started: {new Date(q.startedAt).toLocaleString()}
-                  </Typography>
+            
                   <Button
                     sx={{ mt: 2 }}
                     variant="contained"

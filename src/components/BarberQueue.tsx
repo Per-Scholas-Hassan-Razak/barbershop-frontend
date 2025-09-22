@@ -63,13 +63,23 @@ const BarberQueue = () => {
       <Grid item xs={12}>
         <Card>
           <CardContent>
-            <Typography variant="h5">
+            <Typography variant="h4" fontWeight="bold" gutterBottom>
               {`Queue for ${queueData.queue.barber.username}`.toUpperCase()}
             </Typography>
-            <Typography variant="body2">
+            <Typography
+              variant="subtitle1"
+              sx={{ color: "text.secondary", mb: 2 }}
+            >
               Started: {new Date(queueData.queue.startedAt).toLocaleString()}
             </Typography>
-            <Typography variant="body2">
+            <Typography
+              variant="subtitle1"
+              sx={{
+                fontWeight: "bold",
+                color: queueData.queue.isOpen ? "success.main" : "error.main",
+                mb: 3,
+              }}
+            >
               Status: {queueData.queue.isOpen ? "Open" : "Closed"}
             </Typography>
 
@@ -94,12 +104,12 @@ const BarberQueue = () => {
               </Select>
             </FormControl>
             {selectedCut && (
-              <Card variant="outlined" sx={{ mt: 2 }}>
+              <Card variant="outlined" sx={{ mt: 3, p: 2 }}>
                 <CardContent>
-                  <Typography variant="h6">
+                  <Typography variant="h6" fontWeight="bold">
                     {selectedCut.haircutTemplate.name}
                   </Typography>
-                  <Typography variant="body2" color="text.secondary">
+                  <Typography color="text.secondary">
                     Cost: ${selectedCut.haircutTemplate.baseCost}
                   </Typography>
                   <Typography variant="body2" color="text.secondary">
@@ -107,7 +117,7 @@ const BarberQueue = () => {
                   </Typography>
                   {selectedCut.styleNotes && (
                     <Typography variant="body2" sx={{ mt: 1 }}>
-                      Notes: {selectedCut.styleNotes}
+                      "{selectedCut.styleNotes}""
                     </Typography>
                   )}
                 </CardContent>
@@ -115,19 +125,16 @@ const BarberQueue = () => {
             )}
             <Button
               variant="contained"
-              sx={{ m: 2 }}
+              color="primary"
+              sx={{ mt: 3 }}
               onClick={handleJoinQueue}
               disabled={!selectedHaircutId}
             >
               Join Queue
             </Button>
-
-            {/* {myPosition !== null && (
-            <Typography sx={{ mt: 2 }}>
-              You are currently #{myPosition} in the queue.
+            <Typography variant="h6" sx={{ mt: 4, mb: 2 }}>
+              Current Queue
             </Typography>
-          )} */}
-
             {/* entries list */}
             {queueData.entries.length === 0 ? (
               <Typography sx={{ mt: 2 }} color="text.secondary">
@@ -137,21 +144,26 @@ const BarberQueue = () => {
               <Grid container spacing={2} sx={{ mt: 2 }}>
                 {queueData.entries.map((entry) => (
                   <Grid item xs={12} key={entry._id}>
-                    <Card variant="outlined">
+                    <Card
+                      variant="outlined"
+                      sx={{
+                        p: 2,
+                        borderLeft:
+                          entry.customer._id === user?.sub
+                            ? "6px solid #1976d2"
+                            : "",
+                      }}
+                    >
                       <CardContent>
-                        <Typography variant="body2">
-                          Position: #{entry.position}
+                        <Typography fontWeight="bold">
+                          Position: #{entry.position} –{" "}
+                          {entry.customer.username}
                         </Typography>
-                        <Typography variant="body2">
-                          Status: {entry.status}
-                        </Typography>
-                        <Typography variant="body2">
-                          Customer: {entry.customer.username}
-                        </Typography>
-                        <Typography variant="body2">
-                          Cut: {entry.haircut.styleNotes || "N/A"} (
-                          {entry.haircut.haircutTemplate?.baseDuration ?? "?"} mins, $
-                          {entry.haircut.haircutTemplate?.baseCost ?? "?"})
+                        <Typography color="text.secondary">
+                          {entry.haircut.styleNotes || "Standard Cut"} ·{" "}
+                          {entry.haircut.haircutTemplate?.baseDuration ?? "?"}{" "}
+                          mins · $
+                          {entry.haircut.haircutTemplate?.baseCost ?? "?"}
                         </Typography>
                       </CardContent>
                     </Card>
@@ -160,7 +172,14 @@ const BarberQueue = () => {
               </Grid>
             )}
             {myEntry && (
-              <Typography sx={{ mt: 2 }}>
+              <Typography
+                sx={{
+                  mt: 3,
+                  fontWeight: "bold",
+                  color: "primary.main",
+                  textAlign: "center",
+                }}
+              >
                 You are currently #{myEntry.position} in the queue.
               </Typography>
             )}
