@@ -17,6 +17,7 @@ const CustomerSideNav = () => {
   const [selected, setSelected] = useState("");
 
   const navItems = [
+    { label: "Home", path: "/customer/dashboard" },
     { label: "All Queues", path: "/customer/dashboard/allqueues" },
   ];
 
@@ -28,7 +29,9 @@ const CustomerSideNav = () => {
         "& .MuiDrawer-paper": {
           width: drawerWidth,
           boxSizing: "border-box",
-          backgroundColor: "#f5f5f5",
+         backgroundColor: "#1e1e1e",
+          color: "#fff", 
+          top: 64,
         },
       }}
       variant="permanent"
