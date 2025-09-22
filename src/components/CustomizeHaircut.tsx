@@ -11,48 +11,55 @@ import Stack from "@mui/material/Stack";
 import type { CreateHaircut, CustomizeHaircutProps } from "../types";
 import { validateHaircut } from "../utils/validation";
 import { createHaircut, updateHaircut } from "../services/barberService";
+import { Typography } from "@mui/material";
 
-
-
-const CustomizeHaircut = ({open,onClose, template, mode,cut}:CustomizeHaircutProps) => {
+const CustomizeHaircut = ({
+  open,
+  onClose,
+  template,
+  mode,
+  cut,
+}: CustomizeHaircutProps) => {
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [newHaircut, setNewHaircut] = useState<CreateHaircut>({
-    haircutTemplate:"",
+    haircutTemplate: "",
     name: "",
     price: 0,
     duration: 0,
     styleNotes: "",
   });
-useEffect(() => {
-  if (mode === "create" && template) {
-    setNewHaircut({
-      haircutTemplate: template._id,
-      name: template.name,
-      price: template.baseCost,
-      duration: template.baseDuration,
-      styleNotes: template.description || "",
-    });
-  } else if (mode === "edit" && cut) {
-    setNewHaircut({
-      haircutTemplate: cut.haircutTemplate._id, // still keep reference
-      name: cut.haircutTemplate.name,
-      price: cut.customPrice ?? cut.haircutTemplate.baseCost,
-      duration: cut.customDuration ?? cut.haircutTemplate.baseDuration,
-      styleNotes: cut.styleNotes || "",
-    });
-  }
-}, [mode, template, cut]);
+  useEffect(() => {
+    if (mode === "create" && template) {
+      setNewHaircut({
+        haircutTemplate: template._id,
+        name: template.name,
+        price: template.baseCost,
+        duration: template.baseDuration,
+        styleNotes: template.description || "",
+      });
+    } else if (mode === "edit" && cut) {
+      setNewHaircut({
+        haircutTemplate: cut.haircutTemplate._id,
+        name: cut.haircutTemplate.name,
+        price: cut.customPrice ?? cut.haircutTemplate.baseCost,
+        duration: cut.customDuration ?? cut.haircutTemplate.baseDuration,
+        styleNotes: cut.styleNotes || "",
+      });
+    }
+  }, [mode, template, cut]);
 
   const style = {
     position: "absolute" as const,
     top: "50%",
     left: "50%",
     transform: "translate(-50%, -50%)",
-    width: 400,
-    bgcolor: "background.paper",
+    width: 800,
+    maxHeight: "80vh",
+    bgcolor: "background.default",
+    color: "text.primary",
     boxShadow: 24,
     p: 4,
-    borderRadius: 2,
+    borderRadius: 3,
   };
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -75,39 +82,58 @@ useEffect(() => {
     }
 
     try {
-      console.log("new Haircut :", newHaircut)
-        if (mode === "create") {
-      await createHaircut(newHaircut);
-    } else if (mode === "edit" && cut) {
-      await updateHaircut(cut._id, newHaircut);
-    }
+      console.log("new Haircut :", newHaircut);
+      if (mode === "create") {
+        await createHaircut(newHaircut);
+      } else if (mode === "edit" && cut) {
+        await updateHaircut(cut._id, newHaircut);
+      }
       onClose();
     } catch (err) {
       console.error(err);
     } finally {
-  if (template) {
-    setNewHaircut({
-      haircutTemplate: template._id,
-      name: template.name,
-      price: template.baseCost,
-      duration: template.baseDuration,
-      styleNotes: template.description || "",
-    });
-  }
-  setErrors({});
-}}
-
+      if (template) {
+        setNewHaircut({
+          haircutTemplate: template._id,
+          name: template.name,
+          price: template.baseCost,
+          duration: template.baseDuration,
+          styleNotes: template.description || "",
+        });
+      }
+      setErrors({});
+    }
+  };
 
   return (
-    <Modal open={open} onClose={onClose}>
+    <Modal
+      open={open}
+      onClose={onClose}
+      slotProps={{
+        backdrop: {
+          sx: { backdropFilter: "blur(6px)" }, // blurred background
+        },
+      }}
+    >
       <Box sx={style}>
         <Paper
           component="form"
-          elevation={3}
-          sx={{ p: 3 }}
+          elevation={6}
+          sx={{ p: 4 }}
           onSubmit={handleCustomizeHaircut}
           noValidate
         >
+          <Typography
+            variant="h5"
+            sx={{
+              mb: 3,
+              fontWeight: "bold",
+              textAlign: "center",
+              color: "text.primary", // uses theme-appropriate dark text
+            }}
+          >
+            {mode === "create" ? "✂️ Create Haircut" : "✂️ Edit Haircut"}
+          </Typography>
           <Stack spacing={3}>
             <FormControl>
               <InputLabel htmlFor="name">Cut Name</InputLabel>
@@ -162,7 +188,7 @@ useEffect(() => {
               </FormHelperText>
             </FormControl>
 
-            <Box display="flex" justifyContent="flex-end">
+            <Box display="flex" justifyContent="flex-end" mt={2}>
               <Button type="submit" variant="contained">
                 {mode === "create" ? "Create" : "Update"}
               </Button>
@@ -174,6 +200,4 @@ useEffect(() => {
   );
 };
 
-
-
-export default CustomizeHaircut
+export default CustomizeHaircut;
