@@ -36,3 +36,8 @@ export const joinQueue = async (
   const res = await api.post(`/queues/${barberId}/join`, { barberHaircut });
   return res.data;
 };
+
+export const fetchMyPosition = async (barberId: string) => {
+  const res = await api.get(`/queues/${barberId}/my-position`);
+  return res.data; // { position, status, estimatedWaitMinutes }
+};

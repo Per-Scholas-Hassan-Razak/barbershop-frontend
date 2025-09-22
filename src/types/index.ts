@@ -126,3 +126,8 @@ export interface PublicBarberHaircut {
   createdAt: string;
   updatedAt: string;
 }
+
+export interface QueueContextProps {
+  barberId: string | null;
+  setBarberId: (id: string | null) => void;
+}

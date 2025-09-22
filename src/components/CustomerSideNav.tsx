@@ -9,6 +9,7 @@ import {
   Box,
 } from "@mui/material";
 import { NavLink } from "react-router-dom";
+import SideNavWaitTime from "./SideNavWaitTime";
 
 const drawerWidth = 220;
 
@@ -17,7 +18,6 @@ const CustomerSideNav = () => {
 
   const navItems = [
     { label: "All Queues", path: "/customer/dashboard/allqueues" },
-    { label: "My Active Queue", path: "/customer/dashboard/queues/my-active" },
   ];
 
   return (
@@ -50,6 +50,7 @@ const CustomerSideNav = () => {
             </ListItem>
           ))}
         </List>
+        <SideNavWaitTime  />
       </Box>
     </Drawer>
   );
