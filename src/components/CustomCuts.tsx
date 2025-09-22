@@ -7,13 +7,21 @@ import {
   // Grid,
   CardActions,
   Button,
+  Container,
+  FormControl,
+  InputLabel,
+  MenuItem,
+  Select,
 } from "@mui/material";
 import type { BarberHaircut } from "../types";
 import CustomizeHaircut from "./CustomizeHaircut";
 import Grid from "@mui/material/Grid";
+import EditIcon from "@mui/icons-material/Edit";
+import DeleteIcon from "@mui/icons-material/Delete";
 
 const CustomCuts = () => {
   const [cuts, setCuts] = useState<BarberHaircut[]>([]);
+  const [filterType, setFilterType] = useState<string>("all");
 
   const [editOpen, setEditOpen] = useState(false);
 
@@ -54,18 +62,44 @@ const CustomCuts = () => {
     }
   };
 
-  return (
-    <>
-      <Grid container spacing={3} sx={{ mt: 3 }}>
-        {cuts.map((cut) => (
-          <Grid item xs={12} sm={6} md={4} key={cut._id}>
-            <Card>
-              <CardContent>
-                {/* Custom cut name */}
-                {/* <Typography variant="h6">{cut.name}</Typography> */}
+  const filteredCuts =
+  filterType === "all"
+    ? cuts
+    : cuts.filter((c) => c.haircutTemplate.name === filterType);
 
+  return (
+    <Container maxWidth="xl" disableGutters>
+      <FormControl sx={{ mb: 3, minWidth: 200 }}>
+        <InputLabel>Filter by Type</InputLabel>
+        <Select
+          value={filterType}
+          label="Filter by Type"
+          onChange={(e) => setFilterType(e.target.value)}
+        >
+          <MenuItem value="all">All</MenuItem>
+          {[...new Set(cuts.map((c) => c.haircutTemplate.name))].map((type) => (
+            <MenuItem key={type} value={type}>
+              {type}
+            </MenuItem>
+          ))}
+        </Select>
+      </FormControl>
+      <Grid container spacing={3} justifyContent="center">
+        {filteredCuts.map((cut) => (
+          <Grid item xs={12} sm={6} md={4} key={cut._id}>
+            <Card
+              sx={{
+                height: "100%",
+                display: "flex",
+                flexDirection: "column",
+                justifyContent: "space-between",
+                borderRadius: 2,
+                boxShadow: 3,
+              }}
+            >
+              <CardContent>
                 {/* Template reference */}
-                <Typography variant="body2">
+                <Typography variant="h6" gutterBottom>
                   TYPE: {cut.haircutTemplate.name}
                 </Typography>
 
@@ -81,17 +115,27 @@ const CustomCuts = () => {
                 </Typography>
 
                 {/* Notes with fallback to “—” */}
-                <Typography variant="body2">
+                <Typography variant="body2" color="text.secondary">
                   Notes: {cut.styleNotes || "—"}
                 </Typography>
               </CardContent>
-              <CardActions>
-                <Button size="small" onClick={() => handleEdit(cut)}>
+              <CardActions
+                sx={{ justifyContent: "space-between", px: 2, pb: 2 }}
+              >
+                <Button
+                  size="medium"
+                  variant="contained"
+                  color="primary"
+                  startIcon={<EditIcon />}
+                  onClick={() => handleEdit(cut)}
+                >
                   Edit
                 </Button>
                 <Button
-                  size="small"
+                  size="medium"
+                  variant="contained"
                   color="error"
+                  startIcon={<DeleteIcon />}
                   onClick={() => handleDelete(cut._id)}
                 >
                   Delete
@@ -108,7 +152,7 @@ const CustomCuts = () => {
         cut={selectedCut}
         mode="edit"
       />
-    </>
+    </Container>
   );
 };
 
