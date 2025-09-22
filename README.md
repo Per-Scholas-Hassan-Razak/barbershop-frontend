@@ -1,11 +1,13 @@
 # 💈 Barbershop Frontend
 
 Frontend for the **Barbershop Queue Management App**, built with **React + TypeScript + Material UI (MUI)**.  
-This project provides separate dashboards for **barbers** and **customers**, allowing real-time queue management, haircut customization, and a clean modern UI.
-
----
+This project provides separate dashboards for **barbers** and **customers**, allowing real-time queue management, haircut customization, and a clean modern UI
 
 ## 🚀 Features
+
+### LIVE LINK 
+    FRONTEND LIVE LINK: [https://barbershop-frontend-wq4c.onrender.com/]
+    BACKEND LIVE LINK : [https://barbershop-backend-hkms.onrender.com/api/v1]
 
 ### 🔑 Authentication
 - Register new users (barber or customer).
