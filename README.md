@@ -1,69 +1,77 @@
-# React + TypeScript + Vite
+# 💈 Barbershop Frontend
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Frontend for the **Barbershop Queue Management App**, built with **React + TypeScript + Material UI (MUI)**.  
+This project provides separate dashboards for **barbers** and **customers**, allowing real-time queue management, haircut customization, and a clean modern UI.
 
-Currently, two official plugins are available:
+---
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## 🚀 Features
 
-## Expanding the ESLint configuration
+### 🔑 Authentication
+- Register new users (barber or customer).
+- Login and persist sessions with JWT authentication.
+- Role-based dashboard routing (barber vs customer).
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+### 💈 Barber Dashboard
+- **Side Navigation** with themed styling.
+- **Manage Templates**: View base haircut templates, create customized haircuts.
+- **Custom Cuts**: Edit and delete custom cuts with enhanced buttons & filtering by type.
+- **Queue Management**: Open/close queue, view state, and track customers in line.
 
-```js
-export default tseslint.config([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+### 👤 Customer Dashboard
+- **Side Navigation** with wait-time panel.
+- **Customer Home**: Background image with centered feature cards (All Queues, My Active Queue).
+- **All Queues**: Displays all currently open barber queues with stock images, styled cards, and better typography.
+- **Barber Queue View**: Select haircut, join queue, and view queue entries with styled cards and highlighted customer position.
 
-      // Remove tseslint.configs.recommended and replace with this
-      ...tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      ...tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      ...tseslint.configs.stylisticTypeChecked,
+### 🎨 UI/UX Improvements
+- Background images (Unsplash stock) with brightness filter for contrast.
+- Cards aligned and centered horizontally/vertically where needed.
+- Improved typography contrast for better readability.
+- Larger modals with blurred backgrounds for forms (registration, login, haircut customization).
+- Consistent Material UI theming across dashboards.
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+---
+
+## 🛠️ Tech Stack
+
+- **React 18** + **TypeScript**
+- **Material UI (MUI)**
+- **React Router DOM v6**
+- **Axios** for API requests
+- **Context API** (Auth + Queue providers)
+
+---
+
+## 🔗 Backend API
+
+This frontend connects to the backend deployed at:  
+👉 [Barbershop Backend on Render](https://barbershop-backend-hkms.onrender.com/api/v1)
+
+Full backend repo (with routes overview):  
+👉 [barbershop-backend](https://github.com/Per-Scholas-Hassan-Razak/barbershop-backend)
+
+---
+
+## 📦 Installation & Setup
+
+Clone the repository:
+
+```bash
+git clone https://github.com/Per-Scholas-Hassan-Razak/barbershop-frontend.git
+cd barbershop-frontend
+
+npm install 
+
+# for dev local running 
+npm run dev
+
+# for production 
+npm run build 
+npm run preview
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+### Create an ENV file
+VITE_API_URL=https://barbershop-backend-hkms.onrender.com/api/v1
 
-export default tseslint.config([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
