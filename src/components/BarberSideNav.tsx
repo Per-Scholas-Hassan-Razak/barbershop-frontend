@@ -5,12 +5,11 @@ import {
   ListItem,
   ListItemButton,
   ListItemText,
-  Toolbar,
   Box,
 } from "@mui/material";
 import { NavLink } from "react-router-dom";
 
-const drawerWidth = 220;
+export const drawerWidth = 220;
 
 const BarberSideNav = () => {
   const [selected, setSelected] = useState("");
@@ -30,13 +29,14 @@ const BarberSideNav = () => {
         "& .MuiDrawer-paper": {
           width: drawerWidth,
           boxSizing: "border-box",
-          backgroundColor: "#f5f5f5",
+          backgroundColor: "#1e1e1e",
+          color: "#fff",
+          top: 64,
         },
       }}
       variant="permanent"
       anchor="left"
     >
-      <Toolbar />
       <Box sx={{ overflow: "auto" }}>
         <List>
           {navItems.map((item) => (
@@ -46,8 +46,21 @@ const BarberSideNav = () => {
                 to={item.path}
                 selected={selected === item.path}
                 onClick={() => setSelected(item.path)}
+                sx={{
+                  "&.Mui-selected": {
+                    backgroundColor: "#333",
+                    color: "#ff9800", // accent color
+                    fontWeight: "bold",
+                  },
+                  "&:hover": {
+                    backgroundColor: "#444",
+                  },
+                }}
               >
-                <ListItemText primary={item.label} />
+                <ListItemText
+                  primary={item.label}
+                  primaryTypographyProps={{ fontSize: 16, fontWeight: 500 }}
+                />
               </ListItemButton>
             </ListItem>
           ))}
