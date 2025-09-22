@@ -4,7 +4,6 @@ import RegisterNewUser from "./RegisterNewUser";
 import LoginExistingUser from "./LoginExistingUser";
 import { useAuth } from "../contexts/authContext";
 
-
 const NavBar = () => {
   const [registerOpen, setRegisterOpen] = useState(false);
   const [loginOpen, setLoginOpen] = useState(false);
@@ -13,50 +12,67 @@ const NavBar = () => {
 
   return (
     <Box sx={{ flexGrow: 1 }}>
-      <AppBar position="static" sx={{ bgcolor: "darkgray" }}>
+      <AppBar position="static" sx={{ bgcolor: "primary.main" }}>
         <Toolbar>
-        
           {"BARBERSHOP".split("").map((char, index) => (
             <Typography
               key={index}
               variant="h6"
               component="span"
-              sx={{ mx: 1.4, fontWeight: "bold", color: "black" }}
+              sx={{ mx: 1.4, fontWeight: "bold", color: "secondary.main" }}
             >
               {char}
             </Typography>
           ))}
 
-  <Box sx={{ display: "flex", flexGrow: 1, marginLeft:'230px'}}>
+          <Box sx={{ display: "flex", flexGrow: 1, justifyContent: "center" }}>
             <img
-              src="public/icons/barbericon.svg"
+              src="/icons/barbericon.svg"
               alt="Barbershop Icon"
-              style={{ width: 32, height: 32 }}
+              style={{ width: 42, height: 42 }}
             />
           </Box>
 
           {!user ? (
             <>
-              <Button onClick={() => setRegisterOpen(true)}>
-                <Typography
-                  sx={{ mx: 1.3, fontWeight: "bold", color: "black" }}
-                >
-                  Sign Up
-                </Typography>
+              <Button
+                onClick={() => setRegisterOpen(true)}
+                variant="contained"
+                color="primary"
+                sx={{
+                  fontWeight: "bold",
+                  "&:hover": {
+                    backgroundColor: "secondary.main",
+                    color: "#121212",
+                  },
+                }}
+              >
+                Sign Up
               </Button>
-              <Button color="inherit" onClick={() => setLoginOpen(true)}>
-                <Typography
-                  sx={{ mx: 1.3, fontWeight: "bold", color: "black" }}
-                >
-                  Log In
-                </Typography>
+              <Button
+                onClick={() => setLoginOpen(true)}
+                variant="outlined"
+                sx={{
+                  ml: 2,
+                  borderColor: "secondary.main",
+                  color: "secondary.main",
+                  fontWeight: "bold",
+                  "&:hover": {
+                    borderColor: "secondary.dark",
+                    color: "secondary.dark",
+                  },
+                }}
+              >
+                Log In
               </Button>
             </>
           ) : (
-            <Button color="inherit" onClick={logout}>
-              <Typography sx={{ mx: 1.3, fontWeight: "bold", color: "black" }}>
-                Log Out
-              </Typography>
+            <Button
+              color="secondary"
+              onClick={logout}
+              sx={{ fontWeight: "bold" }}
+            >
+              Log Out
             </Button>
           )}
         </Toolbar>

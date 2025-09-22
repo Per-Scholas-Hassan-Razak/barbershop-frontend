@@ -15,7 +15,13 @@ import { validateLoginCredentials } from "../utils/validation";
 import { useAuth } from "../contexts/authContext";
 import { Typography } from "@mui/material";
 
-const LoginExistingUser = ({ open, onClose }: { open: boolean; onClose: () => void }) => {
+const LoginExistingUser = ({
+  open,
+  onClose,
+}: {
+  open: boolean;
+  onClose: () => void;
+}) => {
   const { login } = useAuth();
 
   const handleClose = () => {
@@ -33,8 +39,10 @@ const LoginExistingUser = ({ open, onClose }: { open: boolean; onClose: () => vo
     top: "50%",
     left: "50%",
     transform: "translate(-50%, -50%)",
-    width: 400,
-    bgcolor: "background.paper",
+    width: 800, // wider modal
+    maxHeight: "90vh", // taller modal
+    bgcolor: "background.default",
+    color: "text.primary",
     boxShadow: 24,
     p: 4,
     borderRadius: 2,
@@ -83,7 +91,14 @@ const LoginExistingUser = ({ open, onClose }: { open: boolean; onClose: () => vo
         Login Exisiting User
       </Button> */}
 
-      <Modal open={open} onClose={handleClose}>
+      <Modal
+        open={open}
+        onClose={handleClose}
+        sx={{
+          backdropFilter: "blur(8px)", // background blur
+          backgroundColor: "rgba(0, 0, 0, 0.6)", // darker overlay
+        }}
+      >
         <Box sx={style}>
           <Paper
             component="form"
@@ -92,6 +107,12 @@ const LoginExistingUser = ({ open, onClose }: { open: boolean; onClose: () => vo
             onSubmit={handleExistingUserLogin}
             noValidate
           >
+            <Typography
+              variant="h5"
+              sx={{ mb: 3, fontWeight: "bold", textAlign: "center" }}
+            >
+              Log In
+            </Typography>
             <Stack spacing={3}>
               <FormControl>
                 <InputLabel htmlFor="email">Email address</InputLabel>
@@ -119,7 +140,8 @@ const LoginExistingUser = ({ open, onClose }: { open: boolean; onClose: () => vo
                   id="new-user-password"
                   error={!!errors.password}
                 >
-                  {errors.password || "password must be greater than 6 characters."}
+                  {errors.password ||
+                    "password must be greater than 6 characters."}
                 </FormHelperText>
               </FormControl>
 
@@ -127,14 +149,6 @@ const LoginExistingUser = ({ open, onClose }: { open: boolean; onClose: () => vo
                 <Button type="submit" variant="contained" fullWidth>
                   Log In
                 </Button>
-                <Button variant="outlined" fullWidth>
-                  Sign Up
-                </Button>
-
-                <Typography variant="body2" color="text.secondary">
-                  Not a member? Sign up today!
-                </Typography>
-
               </Stack>
             </Stack>
           </Paper>

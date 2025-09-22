@@ -13,10 +13,16 @@ import type { CreateUser } from "../types";
 import MenuItem from "@mui/material/MenuItem";
 import { registerNewUser } from "../services/userService";
 import { validateUser } from "../utils/validation";
+import { Typography } from "@mui/material";
 
-const RegisterNewUser = ({ open, onClose }: { open: boolean; onClose: () => void }) => {
-
-   const handleClose = () => {
+const RegisterNewUser = ({
+  open,
+  onClose,
+}: {
+  open: boolean;
+  onClose: () => void;
+}) => {
+  const handleClose = () => {
     onClose();
   };
 
@@ -33,8 +39,10 @@ const RegisterNewUser = ({ open, onClose }: { open: boolean; onClose: () => void
     top: "50%",
     left: "50%",
     transform: "translate(-50%, -50%)",
-    width: 400,
-    bgcolor: "background.paper",
+    width: 800,
+    maxHeight: "90vh",
+    bgcolor: "background.default",
+    color: "text.primary",
     boxShadow: 24,
     p: 4,
     borderRadius: 2,
@@ -74,11 +82,14 @@ const RegisterNewUser = ({ open, onClose }: { open: boolean; onClose: () => void
 
   return (
     <>
-      {/* <Button variant="contained" onClick={handleOpen}>
-        Register New User
-      </Button> */}
-
-      <Modal open={open} onClose={handleClose}>
+      <Modal
+        open={open}
+        onClose={handleClose}
+        sx={{
+          backdropFilter: "blur(8px)",
+          backgroundColor: "rgba(0, 0, 0, 0.6)",
+        }}
+      >
         <Box sx={style}>
           <Paper
             component="form"
@@ -87,6 +98,12 @@ const RegisterNewUser = ({ open, onClose }: { open: boolean; onClose: () => void
             onSubmit={handleNewUserRegistration}
             noValidate
           >
+            <Typography
+              variant="h5"
+              sx={{ mb: 2, fontWeight: "bold", textAlign: "center" }}
+            >
+              Create an Account
+            </Typography>
             <Stack spacing={3}>
               <FormControl>
                 <InputLabel htmlFor="email">Email address</InputLabel>
@@ -100,7 +117,6 @@ const RegisterNewUser = ({ open, onClose }: { open: boolean; onClose: () => void
                   {errors.email || "We'll never share your email."}
                 </FormHelperText>
               </FormControl>
-
               <FormControl>
                 <InputLabel htmlFor="username">Username</InputLabel>
                 <Input
@@ -116,7 +132,6 @@ const RegisterNewUser = ({ open, onClose }: { open: boolean; onClose: () => void
                   {errors.username || "Choose a unique username."}
                 </FormHelperText>
               </FormControl>
-
               <FormControl>
                 <InputLabel htmlFor="password">Password</InputLabel>
                 <Input
@@ -133,7 +148,6 @@ const RegisterNewUser = ({ open, onClose }: { open: boolean; onClose: () => void
                   {errors.password || "password must be > 6 characters."}
                 </FormHelperText>
               </FormControl>
-
               <FormControl fullWidth>
                 <InputLabel id="role-label">Role</InputLabel>
                 <Select
@@ -154,12 +168,10 @@ const RegisterNewUser = ({ open, onClose }: { open: boolean; onClose: () => void
                   Choose whether you are a customer or barber
                 </FormHelperText>
               </FormControl>
-
               <Box display="flex" justifyContent="space-between">
                 <Button type="submit" variant="contained">
                   Sign Up
                 </Button>
-                <Button variant="outlined">Log In</Button>
               </Box>
             </Stack>
           </Paper>

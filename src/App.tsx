@@ -11,6 +11,7 @@ import BarberQueues from "./components/BarberQueues";
 import CustomerDashboard from "./pages/CustomerDashboard";
 import BarberQueue from "./components/BarberQueue";
 import QueueProvider from "./providers/QueueProvider";
+import Landing from "./pages/Landing";
 
 function App() {
   const { user } = useAuth();
@@ -19,7 +20,7 @@ function App() {
       <QueueProvider>
         <NavBar />
         <Routes>
-          <Route path="/" element={<h1>landing!</h1>} />
+          <Route path="/" element={<Landing />} />
           {user?.role === "barber" && (
             <Route path="/barber/dashboard" element={<BarberDashboard />}>
               {/* nested inside BarberDashboard */}
