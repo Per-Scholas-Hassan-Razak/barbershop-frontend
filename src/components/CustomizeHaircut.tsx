@@ -12,6 +12,7 @@ import type { CreateHaircut, CustomizeHaircutProps } from "../types";
 import { validateHaircut } from "../utils/validation";
 import { createHaircut, updateHaircut } from "../services/barberService";
 import { Typography } from "@mui/material";
+import { useSnackbar } from "../contexts/snackbarContext";
 
 const CustomizeHaircut = ({
   open,
@@ -20,6 +21,9 @@ const CustomizeHaircut = ({
   mode,
   cut,
 }: CustomizeHaircutProps) => {
+
+  const { showMessage } = useSnackbar();
+
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [newHaircut, setNewHaircut] = useState<CreateHaircut>({
     haircutTemplate: "",
@@ -85,12 +89,15 @@ const CustomizeHaircut = ({
       console.log("new Haircut :", newHaircut);
       if (mode === "create") {
         await createHaircut(newHaircut);
+        showMessage("Haircut created successfully!", "success");
       } else if (mode === "edit" && cut) {
         await updateHaircut(cut._id, newHaircut);
+        showMessage("Haircut updated successfully!", "success");
       }
       onClose();
     } catch (err) {
       console.error(err);
+      showMessage("Failed to save haircut. Please try again.", "error");
     } finally {
       if (template) {
         setNewHaircut({

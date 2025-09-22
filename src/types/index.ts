@@ -131,3 +131,8 @@ export interface QueueContextProps {
   barberId: string | null;
   setBarberId: (id: string | null) => void;
 }
+
+export type SnackbarContextType = {
+  showMessage: (msg: string, severity?: "success" | "error" | "info" | "warning") => void;
+};
+

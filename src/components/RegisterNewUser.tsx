@@ -14,6 +14,7 @@ import MenuItem from "@mui/material/MenuItem";
 import { registerNewUser } from "../services/userService";
 import { validateUser } from "../utils/validation";
 import { Typography } from "@mui/material";
+import { useSnackbar } from "../contexts/snackbarContext";
 
 const RegisterNewUser = ({
   open,
@@ -25,6 +26,8 @@ const RegisterNewUser = ({
   const handleClose = () => {
     onClose();
   };
+
+  const { showMessage } = useSnackbar();
 
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [newUser, setNewUser] = useState<CreateUser>({
@@ -68,12 +71,11 @@ const RegisterNewUser = ({
     try {
       const response = await registerNewUser(newUser);
       console.log("Registered:", response);
-      // if (response.status === 201) {
-      //   alert("user creation successful!");
-      // }
+      showMessage("User registered successfully!", "success");
       handleClose();
     } catch (err) {
       console.error(err);
+      showMessage("Failed to register user. Please try again.", "error");
     } finally {
       setNewUser({ username: "", email: "", password: "", role: "customer" });
       setErrors({});
